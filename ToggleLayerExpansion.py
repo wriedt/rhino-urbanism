@@ -1,12 +1,26 @@
 import scriptcontext as sc
 
 
-# Get the current Rhino document and it's layers
+# Get the current Rhino document
 doc = sc.doc
-layers = doc.Layers
+
+layers = []
 
 def toggle_all_layers_expansion():
     
+    for layer in doc.Layers:
+
+        #It's important to skip the deleted layers that Rhino might be caching,
+        #as the script might not work otherwise
+        if layer.IsDeleted:     
+            continue
+
+        layers.append(layer)
+    
+    if not layers:
+        print("No layers found")
+        return
+
     is_expanded = 0
 
     for layer in layers:
@@ -14,11 +28,11 @@ def toggle_all_layers_expansion():
             is_expanded += 1
     
     if is_expanded > 0:
-        set_all_layers_expanded(False)
+        set_all_layers_expanded(layers, False)
     else:
-        set_all_layers_expanded(True)
+        set_all_layers_expanded(layers, True)
 
-def set_all_layers_expanded(expand):
+def set_all_layers_expanded(layers, expand):
 
     for layer in layers:
 
