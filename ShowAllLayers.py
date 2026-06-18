@@ -2,25 +2,24 @@
 
 import rhinoscriptsyntax as rs
 
-def show_and_unlock_all_layers():
+def show_all_layers():
     
     layers = rs.LayerNames()
 
     rs.EnableRedraw(False)
-    
+
     if not layers:
         return
 
     for name in layers:
         try:
             rs.LayerVisible(name, True)
-            
-            rs.LayerLocked(name, False)
 
         except Exception as e:
-            print("Could not update layer '{}': {}".format(name, e))
-        
+            print("Could not show layer '{}': {}".format(name, e))
+
         finally:
             rs.EnableRedraw(True)
 
-show_and_unlock_all_layers()
+
+show_all_layers()
